@@ -1,0 +1,44 @@
+[
+	{
+		"id": "1",
+		"text": "Referral Bonus",
+		"amount": "₦1,000.00",
+		"date": "2.30pm, today",
+		"type": "referrals"
+	},
+	{
+		"id": "2",
+		"text": "Referral Bonus",
+		"amount": "₦1,000.00",
+		"date": "2.30pm, today",
+		"type": "referrals"
+	},
+	{
+		"id": "3",
+		"text": "Referral Bonus",
+		"amount": "₦1,000.00",
+		"date": "2.30pm, today",
+		"type": "referrals"
+	},
+	{
+		"id": "4",
+		"text": "Referral Bonus",
+		"amount": "₦1,000.00",
+		"date": "2.30pm, today",
+		"type": "referrals"
+	},
+	{
+		"id": "32",
+		"text": "Referral Bonus",
+		"amount": "₦1,000.00",
+		"date": "2.30pm, today",
+		"type": "referrals"
+	},
+	{
+		"id": "35",
+		"text": "Referral Bonus",
+		"amount": "₦1,000.00",
+		"date": "2.30pm, today",
+		"type": "referrals"
+	}
+]
