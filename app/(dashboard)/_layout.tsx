@@ -4,12 +4,12 @@ import { Tabs } from 'expo-router/tabs';
 import { Image, Platform, Text, View } from 'react-native';
 import icons from '../../components/icons/Icons';
 export default function DashboardLayout() {
-
-
 	return (
 		<Tabs
 			screenOptions={{
-				tabBarStyle: { height: Platform.OS === "ios" ? 100 : 70 },
+				tabBarStyle: {
+					height: Platform.OS === 'ios' ? 100 : 70,
+				},
 			}}>
 			<Tabs.Screen
 				// Name of the route to hide.
@@ -57,6 +57,7 @@ export default function DashboardLayout() {
 					headerShown: !false,
 					headerTitleAlign: 'center',
 					headerStatusBarHeight: 50,
+					headerTintColor: '#000',
 					headerTitle: 'Transactions',
 					title: '',
 					tabBarIcon: ({
@@ -100,6 +101,7 @@ export default function DashboardLayout() {
 					headerTitleAlign: 'center',
 					headerStatusBarHeight: 50,
 					headerTitle: 'Referrals',
+					headerTintColor: '#000',
 					title: '',
 					tabBarIcon: ({
 						focused,
@@ -138,8 +140,11 @@ export default function DashboardLayout() {
 				// Name of the route to hide.
 				name='profile'
 				options={{
-					headerShown: false,
+					headerShown: !false,
 					title: '',
+					headerTitle: 'Settings',
+					headerTitleAlign: 'center',
+					headerTintColor: '#000',
 					tabBarIcon: ({
 						focused,
 					}: {

@@ -73,6 +73,36 @@ function RootLayoutNav() {
 					},
 				}}
 			/>
+			<Stack.Screen
+				name='payment'
+				options={{
+					headerShown: false,
+					headerTitle: '',
+					headerStyle: {
+						backgroundColor: '#fafafa',
+					},
+					headerTintColor: '#000',
+					headerShadowVisible: false,
+					headerTitleStyle: {
+						fontWeight: 'bold',
+					},
+				}}
+			/>
+			<Stack.Screen
+				name='userprofile'
+				options={{
+					headerShown: false,
+					headerTitle: '',
+					headerStyle: {
+						backgroundColor: '#fafafa',
+					},
+					headerTintColor: '#000',
+					headerShadowVisible: false,
+					headerTitleStyle: {
+						fontWeight: 'bold',
+					},
+				}}
+			/>
 
 			<Stack.Screen
 				name='(dashboard)'

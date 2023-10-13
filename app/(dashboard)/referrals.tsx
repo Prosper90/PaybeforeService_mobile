@@ -18,7 +18,7 @@ import icons from '../../components/icons/Icons';
 import DataTable from '../../components/DataTable';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import DateBox from '../../components/DateBox';
-import RNDateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import referData from '../../utility/referData.json';
 
 export default function referrals() {
@@ -42,10 +42,7 @@ export default function referrals() {
 	};
 
   const click = () => {
-		setShowDatePicker(!false);
-    console.log(selectedDate);
-    
-     console.log(showDatePicker);
+    setShowDatePicker(!showDatePicker);  
      
   }
 
@@ -115,7 +112,7 @@ export default function referrals() {
 				</View>
 			</View>
 			{showDatePicker ? (
-				<RNDateTimePicker
+				<DateTimePicker
 					value={selectedDate}
 					display="calendar" 
 					onChange={handleDateChange}
@@ -134,7 +131,7 @@ export default function referrals() {
 					/>
 
 				</TouchableOpacity>
-				<TouchableOpacity onPress={() => setShowDatePicker(true)} className='flex-row border w-[35%] border-[#DADADA] bg-white p-4 rounded-xl justify-between'>
+				<TouchableOpacity onPress={click} className='flex-row border w-[35%] border-[#DADADA] bg-white p-4 rounded-xl justify-between'>
 					<Text className='font-medium text-[#555555] text-base'>
 						End date
 					</Text>
@@ -158,7 +155,7 @@ export default function referrals() {
 			</Text>
 
 			<DateBox />
-			<DataTable data={referData} transType="referrals" />
+			<DataTable data={referData}  />
 			{/* </ScrollView> */}
 		</SafeAreaView>
 	);

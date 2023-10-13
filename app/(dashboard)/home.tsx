@@ -4,23 +4,26 @@ import {
 	Image,
 	Platform,
 	SafeAreaView,
-	ScrollView,
 	StatusBar,
 	Text,
-	ToastAndroid,
 	TouchableOpacity,
 	// Clipboard,
 	View,
 } from 'react-native';
-import * as Clipboard from 'expo-clipboard';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import icons from '../../components/icons/Icons';
 import DashboardBalance from '../../components/DashboardBalance';
 import DataTable from '../../components/DataTable';
-import data from '../../utility/data.json'
+import data from '../../utility/data.json';
+import GpaymentModal from '../../components/GpaymentModal';
+import GLinkModal from '../../components/GLinkModal';
+import { router } from 'expo-router';
+import WithdrawModal from '../../components/WithdrawModal';
 
 export default function Index() {
-
+	const [modalVisible, setModalVisible] = useState(false);
+	const [paymentModal, setPaymentModal] = useState(false);
+	const [withdrawModal, setWithdrawModal] = useState(false);
 
 	return (
 		<SafeAreaView className='flex-1 bg-[#fafafa] '>
@@ -31,7 +34,10 @@ export default function Index() {
 			/>
 
 			<View className='gap-4 py-4 '>
-				<View className={`${Platform.OS === "ios" ? "" : "pt-10"} flex-row items-center justify-between px-4`}>
+				<View
+					className={`${
+						Platform.OS === 'ios' ? '' : 'pt-10'
+					} flex-row items-center justify-between px-4`}>
 					<View>
 						<View className='flex-row items-center'>
 							<View className='border m-1 border-[#6E3EFF] rounded-full mx-2'>
@@ -51,21 +57,36 @@ export default function Index() {
 				<DashboardBalance />
 			</View>
 			<View className=' flex-row gap-4 relative  items-center justify-center px-2'>
-				<TouchableOpacity className='items-center flex-row pb-4 w-[42vw] px-4 pt-2 gap-2 justify-center bg-[#6e3eff] rounded-2xl'>
+				<TouchableOpacity
+					onPressIn={() => setModalVisible(!modalVisible)}
+					className='items-center flex-row pb-4 w-[42vw] px-4 pt-2 gap-2 justify-center bg-[#6e3eff] rounded-2xl'>
 					<Image
 						source={icons.exportIcon}
 						className='h-5 w-5'
 					/>
-					<Text className={`${Platform.OS === "ios" ? "text-[10px]": "text-sm"} text-white font-bold`}>
+					<Text
+						className={`${
+							Platform.OS === 'ios'
+								? 'text-[10px]'
+								: 'text-sm'
+						} text-white font-bold`}>
 						Generate payment
 					</Text>
 				</TouchableOpacity>
-				<TouchableOpacity className='items-center flex-row pb-4 w-[42vw] px-4 pr-9 pt-2 gap-2 justify-center bg-[#A23EFF] rounded-2xl'>
+
+				<TouchableOpacity
+					onPressIn={() => setWithdrawModal(!withdrawModal)}
+					className='items-center flex-row pb-4 w-[42vw] px-4 pr-9 pt-2 gap-2 justify-center bg-[#A23EFF] rounded-2xl'>
 					<Image
 						source={icons.withdraw}
 						className='h-5 w-5'
 					/>
-					<Text className={`${Platform.OS === "ios" ? "text-[10px]": "text-sm"} text-white font-bold`}>
+					<Text
+						className={`${
+							Platform.OS === 'ios'
+								? 'text-[10px]'
+								: 'text-sm'
+						} text-white font-bold`}>
 						Withdraw
 					</Text>
 				</TouchableOpacity>
@@ -87,8 +108,23 @@ export default function Index() {
 			<Text className='mx-8 mt-4 font-semibold text-[#555555] text-sm'>
 				Recent Transactions
 			</Text>
-			<DataTable data={data} transType="transaction" />
+			<DataTable data={data} />
+			<GpaymentModal
+				modalVisible={modalVisible}
+				setPaymentModal={setPaymentModal}
+				setModalVisible={setModalVisible}
+			/>
+			<GLinkModal
+				setPaymentModal={setPaymentModal}
+				paymentModal={paymentModal}
+			/>
+			<WithdrawModal
+				setWithdrawModal={setWithdrawModal}
+				withdrawModal={withdrawModal}
+			/>
+		
 			{/* </ScrollView> */}
 		</SafeAreaView>
 	);
 }
+// withdrawModal

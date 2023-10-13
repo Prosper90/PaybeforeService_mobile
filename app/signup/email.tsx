@@ -18,9 +18,7 @@ export default function Login() {
 				backgroundColor='#6E3EFF'
 			/>
 			<View className='mt-2 justify-center items-center h-4/5'>
-				<Text className=' text-xl font-bold text-[#6E3EFF]'>
-					PayBeforeService
-				</Text>
+				
 				<Text className=' text-2xl font-medium mt-3'>
 					What is your email?
 				</Text>
@@ -29,7 +27,7 @@ export default function Login() {
 						style={{ height: 60 }}
 						placeholder='Enter phone email'
 						className='w-full py-2 text-base pl-5'
-						keyboardType='number-pad'
+						keyboardType='default'
 						// onChangeText={newText => setText(newText)}
 						// defaultValue={text}
 					/>

@@ -18,9 +18,7 @@ export default function Login() {
 				backgroundColor='#6E3EFF'
 			/>
 			<View className='mt-2 justify-center items-center h-4/5'>
-				<Text className=' text-2xl font-bold text-[#6E3EFF]'>
-					PayBeforeService
-				</Text>
+				
 				<Text className=' text-2xl font-medium mt-3'>
 					Enter your mobile number
 				</Text>

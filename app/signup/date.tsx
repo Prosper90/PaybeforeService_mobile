@@ -45,9 +45,7 @@ export default function date() {
 				backgroundColor='#6E3EFF'
 			/>
 			<View className='mt-2 justify-center items-center h-4/5'>
-				<Text className=' text-xl font-bold text-[#6E3EFF]'>
-					PayBeforeService
-				</Text>
+				
 				<Text className=' text-2xl text-center  font-medium mt-3'>
 					Hey Dollilop, Tell us when you were born
 				</Text>

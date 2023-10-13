@@ -8,10 +8,11 @@ import {
 	TouchableOpacity,
 	View,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React  from 'react';
 import icons from './icons/Icons';
+import { router } from 'expo-router';
 
-export default function DataTable({ data, transType }: any) {
+export default function DataTable({ data }: any) {
 
 	
      
@@ -20,25 +21,25 @@ export default function DataTable({ data, transType }: any) {
 			<View className='flex-row gap-5 items-center'>
 				<Image
 					source={icons.tableSvg}
-					className={`${Platform.OS === "ios" ? "h-12 w-12" : "h-14 w-14" }`}
+					className={`${Platform.OS === "ios" && "h-10 w-10" } h-12 w-12`}
 				/>
 				<View>
-					<Text className={`${Platform.OS === "ios" ? "text-sm": "text-base"} font-medium text-[#000] `}>
+					<Text className={`${Platform.OS === "ios" && "text-xs"} text-sm font-medium text-[#000] `}>
 						{item.text}
 					</Text>
 					{item.type === 'referrals' ? null : (
-						<Text className={`${Platform.OS === "ios" ? "text-sm": "text-lg"} font-semibold text-[#000]`}>
+						<Text className={`${Platform.OS === "ios" && "text-xs"} font-semibold text-sm text-[#000]`}>
 							{item.amount}
 						</Text>
 					)}
-					<Text className='font-normal text-[#555555] text-sm'>
+					<Text className='font-normal text-[#555555] text-xs'>
 						{item.date}
 					</Text>
 				</View>
 			</View>
 			{item.type === 'referrals' ? (
 				<View>
-					<Text className='font-semibold text-[#000] text-lg'>
+					<Text className='font-semibold text-[#000] text-sm'>
 						{item.amount}
 					</Text>
 					<TouchableOpacity className='px-4 py-1 mt-2 justify-center bg-[#a23eff1b] rounded-full mr-1'>
@@ -48,7 +49,7 @@ export default function DataTable({ data, transType }: any) {
 					</TouchableOpacity>
 				</View>
 			) : (
-				<TouchableOpacity className='px-6 py-3 justify-center bg-[#a23eff32] rounded-full mr-1'>
+				<TouchableOpacity onPressIn={() => router.push('/payment/redeem')} className='px-6 py-3 justify-center bg-[#a23eff32] rounded-full mr-1'>
 					<Text className='text-[#A23EFF] text-xs font-bold'>Redeem</Text>
 				</TouchableOpacity>
 			)}

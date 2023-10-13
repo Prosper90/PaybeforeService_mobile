@@ -29,9 +29,6 @@ export default function SignUp() {
 				backgroundColor='#6E3EFF'
 			/>
 			<View className='mt-2 justify-center items-center h-4/5 w-full'>
-				<Text className=' text-xl mb-5 font-bold text-[#6E3EFF]'>
-					PayBeforeService
-				</Text>
 				<View>
 					<Text className=' text-xl font-medium text-[#555555] my-3'>
 						Email Address
@@ -41,7 +38,7 @@ export default function SignUp() {
 							style={{ height: 60 }}
 							placeholder='Email address'
 							className='w-full py-2 text-base '
-							keyboardType='number-pad'
+							keyboardType='default'
 							// onChangeText={newText => setText(newText)}
 							// defaultValue={text}
 						/>

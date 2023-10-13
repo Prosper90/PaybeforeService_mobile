@@ -12,7 +12,16 @@ const link = require('../../assets/images/link.png');
 const tableSvg = require('../../assets/images/table-svg.png');
 const dateIcon = require('../../assets/images/calendar.png');
 const filter = require('../../assets/images/filter.png');
+const bank = require('../../assets/images/bank.png');
+const arrowRight = require('../../assets/images/arrowRight.png');
+const profileMenu = require('../../assets/images/profile.png');
+const secure = require('../../assets/images/secure.png');
+const contact = require('../../assets/images/contact.png');
+const notify = require('../../assets/images/notify.png');
 const search = require('../../assets/images/search.png');
+const success = require('../../assets/images/success.png');
+const addbank = require('../../assets/images/addbank.png');
+const addbene = require('../../assets/images/addbene.png');
 
 
 const icons = {
@@ -21,8 +30,17 @@ const icons = {
     profile,
     profileOutline,
     trans,
+    addbank,
+    addbene,
     dateIcon,
     filter,
+    success,
+    bank,
+    arrowRight,
+    profileMenu,
+    secure,
+    contact,
+    notify,
     search,
     transOutline,
     referral,

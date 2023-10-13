@@ -4,7 +4,6 @@ import {
 	Image,
 	SafeAreaView,
 	StatusBar,
-	StyleSheet,
 	Text,
 	TextInput,
 	TouchableOpacity,
@@ -12,10 +11,10 @@ import {
 } from 'react-native';
 import React, { useState } from 'react';
 import icons from '../../components/icons/Icons';
-import RNDateTimePicker from '@react-native-community/datetimepicker';
-import data from '../../utility/data.json'
+// import DateTimePicker from '@react-native-community/datetimepicker';
+import data from '../../utility/data.json';
 import DataTable from '../../components/DataTable';
-
+import RNDateTimePicker from '@react-native-community/datetimepicker';
 
 export default function transaction() {
 	const [selectedDate, setSelectedDate] = useState(
@@ -33,12 +32,10 @@ export default function transaction() {
 			setSelectedDate(selectedDate);
 		}
 		setShowDatePicker(false);
-		console.log(selectedDate);
 	};
 
 	const click = () => {
-		setShowDatePicker(!false);
-		console.log(showDatePicker);
+    setShowDatePicker(!showDatePicker);
 	};
 
 	return (
@@ -77,7 +74,7 @@ export default function transaction() {
 					/>
 				</TouchableOpacity>
 				<TouchableOpacity
-					onPress={() => setShowDatePicker(true)}
+					onPress={click}
 					className='flex-row border w-[35%] border-[#DADADA] bg-white p-4 rounded-xl justify-between'>
 					<Text className='font-medium text-[#555555] text-base'>
 						End date
@@ -97,14 +94,14 @@ export default function transaction() {
 					</Text>
 				</TouchableOpacity>
 			</View>
-			{showDatePicker ? (
+		{showDatePicker ? (
 				<RNDateTimePicker
 					value={selectedDate}
 					display='calendar'
 					onChange={handleDateChange}
 				/>
 			) : null}
-			<DataTable data={data} transType='transaction' />
+			<DataTable data={data}  />
 		</SafeAreaView>
 	);
 }
