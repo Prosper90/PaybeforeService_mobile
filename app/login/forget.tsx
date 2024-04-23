@@ -10,7 +10,7 @@ import {
 import React from 'react';
 import { Link } from 'expo-router';
 
-export default function Login() {
+export default function forget() {
 	return (
 		<View className='flex-1 bg-[#FAFAFA] items-center relative px-8'>
 			<StatusBar
@@ -38,7 +38,7 @@ export default function Login() {
 				</Text>
 			</View>
 			<TouchableOpacity className='border-2 items-center absolute bottom-8 justify-center bg-[#6E3EFF] rounded-full w-full border-white'>
-				<Link className='py-3' href='/signup/date'>
+				<Link className='py-3' href='/login/successpage'>
 					<Text className='text-white font-bold text-lg p-3 '>
 						Continue
 					</Text>

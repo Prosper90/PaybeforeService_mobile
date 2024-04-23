@@ -15,9 +15,9 @@ import { Link } from 'expo-router';
 
 export default function index() {
 	return (
-		<SafeAreaView className='flex-1 bg-[#FAFAFA] px-4 justify-between py-6 gap-4'>
-			<View className=''>
-				<View className='border mb-5 rounded-lg border-[#DADADA] bg-white p-4'>
+		<SafeAreaView className='flex-1 bg-[#FAFAFA] px-4 justify-between py-16 gap-4'>
+			<View className='px-6 items-center justify-center '>
+				<View className='border mb-5 mt-16 rounded-lg border-[#DADADA] bg-white p-4'>
 					<Text className='text-sm font-medium text-[#808080] px-5'>
 						Full Name
 					</Text>
@@ -102,8 +102,8 @@ export default function index() {
 					</View>
 				</View>
 			</View>
-			<TouchableOpacity className='border-2 items-center  bg-[#6E3EFF] rounded-full mt-2 w-full border-white'>
-				<Text className='text-white font-bold text-lg p-3 '>
+			<TouchableOpacity className='border-2   bg-[#6E3EFF] rounded-full mt-2  border-white'>
+				<Text className='text-white font-bold text-center text-lg p-3 '>
 					Update
 				</Text>
 			</TouchableOpacity>

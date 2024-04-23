@@ -22,6 +22,7 @@ const search = require('../../assets/images/search.png');
 const success = require('../../assets/images/success.png');
 const addbank = require('../../assets/images/addbank.png');
 const addbene = require('../../assets/images/addbene.png');
+const reset = require('../../assets/images/reset.png');
 
 
 const icons = {
@@ -34,6 +35,7 @@ const icons = {
     addbene,
     dateIcon,
     filter,
+    reset,
     success,
     bank,
     arrowRight,

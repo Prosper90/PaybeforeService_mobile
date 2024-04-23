@@ -43,7 +43,6 @@ export default function PaymentLayout() {
 					},
 					headerTintColor: '#000',
 					// headerShadowVisible: false,
-					
 					// presentation: 'modal',
 				}}
 			/>

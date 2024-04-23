@@ -30,18 +30,6 @@ export default function Layout() {
 				}}
 			/>
 			<Stack.Screen
-				name='email'
-				options={{
-					headerShown: true,
-					headerTitle: '',
-					headerStyle: {
-						backgroundColor: '#fafafa',
-					},
-					headerTintColor: '#000',
-					headerShadowVisible: false,
-				}}
-			/>
-			<Stack.Screen
 				name='date'
 				options={{
 					headerShown: true,

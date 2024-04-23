@@ -37,7 +37,7 @@ export default function profile() {
 					</View>
 				</View>
 			</View>
-			<View className='gap-4 mt-5'>
+			<View className='gap-4 mt-5 px-6'>
 				<TouchableOpacity onPress={() => router.push("/userprofile")} className='flex-row justify-between items-center bg-white border rounded-xl border-[#DADADA] p-5'>
 					<View className='flex-row gap-4 items-center justify-between'>
 						<Image

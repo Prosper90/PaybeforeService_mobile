@@ -65,7 +65,7 @@ export default function SignUp() {
 						/>
 					</View>
 					<Link
-						href='/forget'
+						href='/login/forget'
 						className='text-xl text-right font-medium text-[#6E3EFF] mb-3'>
 						Forgot passsword?
 					</Link>

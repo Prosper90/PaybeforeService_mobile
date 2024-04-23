@@ -7,12 +7,12 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 const DashboardBalance = () => {
 	return (
 		<View className='gap-4 px-4 ml-1 mt-2'>
-			<View className={`${Platform.OS === "ios" && "py-7"} bg-[#6E3EFF] overflow-hidden relative flex-row justify-between items-center  rounded-3xl p-6 py-10`}>
+			<View className={`${Platform.OS === "ios" && "py-7"} bg-[#6E3EFF] overflow-hidden relative flex-row justify-between items-center  rounded-3xl p-6 py-4`}>
 				<View>
-					<Text className='text-sm font-semibold text-white'>
+					<Text className='text-xs font-semibold text-white'>
 						Total Wallet Balance
 					</Text>
-					<Text className={`${Platform.OS === "ios" && "text-lg" } font-bold text-white text-2xl`}>
+					<Text className={`${Platform.OS === "ios" && "text-sm" } font-bold text-white text-base`}>
 						₦50,000.00
 					</Text>
 				</View>
@@ -29,12 +29,12 @@ const DashboardBalance = () => {
 				</View>
 			</View>
 
-			<View className={`${Platform.OS === "ios" && "py-7"} bg-[#fff] relative overflow-hidden shadow-sm border border-[#DADADA] flex-row justify-between items-center  rounded-3xl p-6 py-10`}>
+			<View className={`${Platform.OS === "ios" && "py-7"} bg-[#fff] relative overflow-hidden shadow-sm border border-[#DADADA] flex-row justify-between items-center  rounded-3xl p-6 py-3`}>
 				<View>
 					<Text className={`${Platform.OS === "ios" && "text-xs"}  font-semibold text-black`}>
 						Total Wallet Balance
 					</Text>
-					<Text className={`${Platform.OS === "ios" && "text-lg" } font-bold text-black text-2xl`}>
+					<Text className={`${Platform.OS === "ios" && "text-sm" } font-bold text-black text-base`}>
 						₦50,000.00
 					</Text>
 				</View>

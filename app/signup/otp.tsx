@@ -31,7 +31,7 @@ export default function otp() {
 			
 			</View>
 			<TouchableOpacity className='border-2 items-center absolute bottom-8 justify-center bg-[#6E3EFF] rounded-full w-full border-white'>
-				<Link className='py-3' href='/signup/email'>
+				<Link className='py-3' href='/signup/date'>
 					<Text className='text-white font-bold text-lg p-3 '>
 						Continue
 					</Text>

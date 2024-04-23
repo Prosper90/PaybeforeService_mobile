@@ -9,6 +9,14 @@ export default function Layout() {
 				name='index'
 				options={{ headerShown: false }}
 			/>
+			<Stack.Screen
+				name='forget'
+				options={{ headerShown: false }}
+			/>
+			<Stack.Screen
+				name='successpage'
+				options={{ headerShown: false }}
+			/>
 	
 		</Stack>
 	);

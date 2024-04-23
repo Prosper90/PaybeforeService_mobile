@@ -59,16 +59,16 @@ export default function Index() {
 			<View className=' flex-row gap-4 relative  items-center justify-center px-2'>
 				<TouchableOpacity
 					onPressIn={() => setModalVisible(!modalVisible)}
-					className='items-center flex-row pb-4 w-[42vw] px-4 pt-2 gap-2 justify-center bg-[#6e3eff] rounded-2xl'>
+					className='items-center flex-row py-3 w-[42vw] px-4  justify-center bg-[#6e3eff] rounded-xl'>
 					<Image
 						source={icons.exportIcon}
-						className='h-5 w-5'
+						className='h-4 w-4 mr-2'
 					/>
 					<Text
 						className={`${
 							Platform.OS === 'ios'
 								? 'text-[10px]'
-								: 'text-sm'
+								: 'text-xs'
 						} text-white font-bold`}>
 						Generate payment
 					</Text>
@@ -76,10 +76,10 @@ export default function Index() {
 
 				<TouchableOpacity
 					onPressIn={() => setWithdrawModal(!withdrawModal)}
-					className='items-center flex-row pb-4 w-[42vw] px-4 pr-9 pt-2 gap-2 justify-center bg-[#A23EFF] rounded-2xl'>
+					className='items-center flex-row py-3 w-[42vw] px-4 pr-9 justify-center bg-[#A23EFF] rounded-xl'>
 					<Image
 						source={icons.withdraw}
-						className='h-5 w-5'
+						className='h-4 w-4 mr-1'
 					/>
 					<Text
 						className={`${
