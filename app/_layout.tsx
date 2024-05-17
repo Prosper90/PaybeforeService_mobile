@@ -1,11 +1,15 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useFonts } from "expo-font";
-import { SplashScreen, Stack, Redirect } from "expo-router";
-import { useEffect, useState } from "react";
+import { SplashScreen, Stack, Redirect, useNavigation } from "expo-router";
+import { useContext, useEffect, useState } from "react";
 import { Text, View } from "react-native";
 import * as SecureStore from "expo-secure-store";
-
-const tokenKey = "my-jwt";
+import { ContextProvider, DataContext } from "../utility/context";
+import { SuccessPayment } from "../components/SvgItems";
+import { NavigationContainer } from "@react-navigation/native";
+import SuccessPaymentModal from "../components/SuccessPaymentModal";
+import { NotifierRoot, NotifierWrapper } from "react-native-notifier";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function RootLayout() {
   const [authState, setAuthState] = useState<{
@@ -13,39 +17,29 @@ export default function RootLayout() {
     authenticated: boolean | null;
     loading: boolean;
   }>({ token: null, authenticated: null, loading: true });
+  const { successPayment, setSuccessPayment } = useContext(DataContext);
+  // const { authState, setAuthState } = useContext(DataContext);
 
   useEffect(() => {
-    const loadToken = async () => {
-      try {
-        const storedToken = await SecureStore.getItemAsync(tokenKey);
-        if (storedToken) {
-          setAuthState({ token: storedToken, authenticated: true, loading: false });
-        } else {
-          setAuthState({ token: null, authenticated: false, loading: false });
-        }
-      } catch (error) {
-        console.error("Error loading token from SecureStore:", error);
-        setAuthState({ token: null, authenticated: false, loading: false });
-      }
-    };
-    
-    loadToken();
+    // loadToken();
   }, []);
 
-  if (authState.loading) {
-    return <LoadingIndicator />;
-  }
-
-
   return (
-    <Stack>
-      <Stack.Screen name="index" options={{ headerShown: false }} />
-      <Stack.Screen name="login" options={{ headerShown: false }} />
-      <Stack.Screen name="signup" options={{ headerShown: false }} />
-      <Stack.Screen name="(dashboard)" options={{ headerShown: false }} />
-  	  <Stack.Screen name="userprofile" options={{ headerShown: false }} />
-
-    </Stack>
+    <GestureHandlerRootView>
+      <ContextProvider>
+        <NotifierWrapper>
+          <Stack>
+            <Stack.Screen name="index" options={{ headerShown: false }} />
+            <Stack.Screen name="login" options={{ headerShown: false }} />
+            <Stack.Screen name="signup" options={{ headerShown: false }} />
+            <Stack.Screen name="(dashboard)" options={{ headerShown: false }} />
+            <Stack.Screen name="userprofile" options={{ headerShown: false }} />
+            <Stack.Screen name="withdrawal" options={{ headerShown: false }} />
+          </Stack>
+          <SuccessPaymentModal />
+        </NotifierWrapper>
+      </ContextProvider>
+    </GestureHandlerRootView>
   );
 }
 
