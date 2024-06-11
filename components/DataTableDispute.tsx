@@ -11,6 +11,7 @@ import icons from "./icons/Icons";
 import { router } from "expo-router";
 import { formatDate } from "../utility/constants";
 import { DataContext } from "../utility/context";
+import Loader from "./Loader";
 
 export default function DataTableDispute({
   data,
@@ -73,14 +74,15 @@ export default function DataTableDispute({
   return (
     <View className="mx-4 mt-3 border border-[#DADADA] flex-1 flex-grow bg-white pb-3 px-5 mb-4 rounded-xl">
       {loadState ? (
-        <Text className="font-bold text-3xl text-center pt-20 text-[#555555]">
-          Loading...
+        <Text className="font-bold text-3xl text-center pt-24 text-[#555555]">
+          <Loader />
         </Text>
       ) : !loadState && data?.length !== 0 ? (
         <FlatList
           data={data}
           renderItem={renderItem}
-          keyExtractor={(item) => item._id}
+          // keyExtractor={(item) => item._id}
+          keyExtractor={(item, index) => `${item._id}-${index}`}
           onEndReached={onEndReached}
           onEndReachedThreshold={0.5}
         />
@@ -96,7 +98,7 @@ export default function DataTableDispute({
             <Text className="font-semibold text-xs text-black">
               You have no transactions
             </Text>
-            <Text className="font-normal text-xs text-gray-600">
+            <Text className="font-normal text-xs text-gray-600 text-center">
               Your payments would show up here after you have made a successful
               transaction
             </Text>

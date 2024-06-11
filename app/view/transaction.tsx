@@ -6,21 +6,23 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  SafeAreaView,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import icons from "../../components/icons/Icons";
 import { DataContext } from "../../utility/context";
 import { Error, Success, Warn } from "../../components/SvgItems";
 import { formatDate } from "../../utility/constants";
+import ShowDownload from "../../components/ShowDownload";
 
 export default function transaction() {
   const { selectedViewTransaction, setSelectedViewTransaction } =
     useContext(DataContext);
 
-  //   const [sModal, setSModal] = useState<boolean>(false);
+  const [showDownload, setShowDownload] = useState<boolean>(false);
 
   return (
-    <KeyboardAwareScrollView className="flex-1 bg-[#fafafa] ">
+    <SafeAreaView className="flex-1 bg-[#fafafa] ">
       <View className="p-5 flex flex-col justify-center items-center ">
         {selectedViewTransaction?.status === "success" ? (
           <Success />
@@ -31,41 +33,42 @@ export default function transaction() {
           <Error />
         )}
 
-        <View className="p-2 border border-[#DADADA] mt-5 rounded-2xl w-[100%]">
-          <View
-            className={`text-sm font-semibold w-[100%] flex flex-col justify-center items-center${
-              selectedViewTransaction?.status === "success"
-                ? "text-[#22bb33]"
-                : selectedViewTransaction?.status === "incomplete"
-                ? "text-[#ffcc00]"
-                : "text-[#FF3E3E]"
-            }`}
-          >
-            <Text className="text-base font-normal text-[#555555] text-center ">
-              {selectedViewTransaction?.status === "success"
-                ? `${selectedViewTransaction?.type} Successfull`
-                : `${selectedViewTransaction?.type} Failed`}
-            </Text>
-            <View>
-              <Text className="text-xs font-normal text-[#555555] text-center">
-                {selectedViewTransaction?.type} Type
-              </Text>
-              {/* <Text className="text-xs font-normal text-[#555555] ">
-                {selectedView?.type}
-              </Text> */}
-            </View>
-          </View>
+        <View
+          className={`text-sm font-semibold w-[100%] flex flex-col justify-center items-center${
+            selectedViewTransaction?.status === "success"
+              ? "text-[#22bb33]"
+              : selectedViewTransaction?.status === "incomplete"
+              ? "text-[#ffcc00]"
+              : "text-[#FF3E3E]"
+          }`}
+        >
+          <Text className="text-base font-normal text-[#555555] text-center ">
+            {selectedViewTransaction?.status === "success"
+              ? `${selectedViewTransaction?.type} Successfull`
+              : `${selectedViewTransaction?.type} Failed`}
+          </Text>
+        </View>
 
+        <View className="p-2 border border-[#DADADA] mt-5 rounded-2xl w-[100%]">
           <View className="flex-row items-center gap-4 justify-between mt-2 px-2">
             <Text className="text-base font-normal text-[#555555]">
               {selectedViewTransaction?.type === "Payment"
                 ? "Sender Details"
                 : "Recipient Details"}
             </Text>
-            <Text className="font-medium text-[#000] text-xs">
+            <Text className="font-semibold text-[#000] text-xs text-end">
               {selectedViewTransaction?.type === "Payment"
-                ? `${selectedViewTransaction?.payment?.sender?.account_name} | ${selectedViewTransaction?.payment?.sender?.account_number}`
-                : `${selectedViewTransaction?.withdrawal?.reciever?.account_name} | ${selectedViewTransaction?.withdrawal?.reciever?.account_number}`}
+                ? `${
+                    selectedViewTransaction?.payment?.sender?.account_name
+                  }| ${"\n"} ${
+                    selectedViewTransaction?.payment?.sender?.account_number
+                  }`
+                : `${
+                    selectedViewTransaction?.withdrawal?.reciever?.account_name
+                  } | ${"\n"} ${
+                    selectedViewTransaction?.withdrawal?.reciever
+                      ?.account_number
+                  }`}
             </Text>
           </View>
           {selectedViewTransaction?.type === "Payment" ? (
@@ -167,7 +170,7 @@ export default function transaction() {
           </TouchableOpacity>
 
           <TouchableOpacity
-            //   onPress={() => setSModal(true)}
+            onPress={() => setShowDownload(true)}
             className="border-2 items-center justify-center bg-[#6E3EFF] rounded-full border-white mt-10 w-[50%]"
           >
             <Text className="text-white font-bold text-lg p-3 ">Share</Text>
@@ -175,6 +178,11 @@ export default function transaction() {
         </View>
       </View>
       {/* <SuccessModal sModal={sModal} sMsg="Congratulations, this payment has been sent to your main wallet." sTittle="Congratulations" setSModal={setSModal}/> */}
-    </KeyboardAwareScrollView>
+      <ShowDownload
+        type={"transaction"}
+        showDownload={showDownload}
+        setShowDownload={setShowDownload}
+      />
+    </SafeAreaView>
   );
 }

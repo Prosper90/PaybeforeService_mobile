@@ -96,8 +96,8 @@ export type SelectedData = {
       account_name: string;
       account_number: string;
     }; // Assuming this is a string representing the date
-    description: number | string; // Since the value is 130 in your example
-    status: number | string; // Since the value is 0 in your example
+    description: string; // Since the value is 130 in your example
+    status: string; // Since the value is 0 in your example
   };
   owner: string;
   track_id: string;

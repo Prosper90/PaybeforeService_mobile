@@ -69,47 +69,44 @@ export default function transaction() {
         return (
           (type && type.toLowerCase().includes(query.toLowerCase())) ||
           (payment &&
-            (payment.linkID?.toLowerCase().includes(query.toLowerCase()) ||
-              payment.created
+            (payment?.linkID?.toLowerCase().includes(query.toLowerCase()) ||
+              payment?.created
                 ?.toString()
                 .toLowerCase()
                 .includes(query.toLowerCase()) ||
-              payment.expired
+              payment?.expired
                 ?.toString()
                 .toLowerCase()
                 .includes(query.toLowerCase()) ||
-              payment.amount_created.toString().includes(query.toLowerCase()) ||
-              payment.amount_paid.toString().includes(query.toLowerCase()) ||
-              payment.isPaid.toLowerCase().includes(query.toLowerCase()) ||
-              payment.isRedeemed
+              payment?.amount_created
                 .toString()
-                .toLowerCase()
                 .includes(query.toLowerCase()) ||
-              payment.reciever.toLowerCase().includes(query.toLowerCase()) ||
-              (payment.sender &&
-                (payment.sender.account_name
-                  .toLowerCase()
+              payment?.amount_paid.toString().includes(query.toLowerCase()) ||
+              payment?.isPaid.toLowerCase().includes(query.toLowerCase()) ||
+              payment?.reciever.toLowerCase().includes(query.toLowerCase()) ||
+              (payment?.sender &&
+                (payment?.sender?.account_name
+                  ?.toLowerCase()
                   .includes(query.toLowerCase()) ||
-                  payment.sender.account_number
-                    .toLowerCase()
+                  payment?.sender?.account_number
+                    ?.toLowerCase()
                     .includes(query.toLowerCase()))))) ||
           (withdrawal &&
-            (withdrawal.amount.toString().includes(query.toLowerCase()) ||
-              withdrawal.sender.toLowerCase().includes(query.toLowerCase()) ||
-              (withdrawal.reciever &&
-                (withdrawal.reciever.account_name
+            (withdrawal?.amount?.toString().includes(query.toLowerCase()) ||
+              withdrawal?.sender?.toLowerCase().includes(query.toLowerCase()) ||
+              (withdrawal?.reciever &&
+                (withdrawal?.reciever?.account_name
                   .toLowerCase()
-                  .includes(query.toLowerCase()) ||
-                  withdrawal.reciever.account_number
+                  .includes(query?.toLowerCase()) ||
+                  withdrawal?.reciever?.account_number
                     .toLowerCase()
                     .includes(query.toLowerCase()))) ||
               withdrawal.description
                 .toString()
                 .toLowerCase()
                 .includes(query.toLowerCase()) ||
-              withdrawal.status
-                .toString()
-                .toLowerCase()
+              withdrawal?.status
+                ?.toLowerCase()
                 .includes(query.toLowerCase()))) ||
           owner.toLowerCase().includes(query.toLowerCase()) ||
           track_id.toLowerCase().includes(query.toLowerCase()) ||

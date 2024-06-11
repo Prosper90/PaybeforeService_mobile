@@ -7,6 +7,7 @@ export default function Layout() {
     <Stack>
       <Stack.Screen name="dispute" options={{ headerShown: false }} />
       <Stack.Screen name="transaction" options={{ headerShown: false }} />
+      <Stack.Screen name="redeem" options={{ headerShown: false }} />
     </Stack>
   );
 }

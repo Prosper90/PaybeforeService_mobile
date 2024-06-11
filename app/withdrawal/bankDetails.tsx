@@ -20,6 +20,10 @@ import { makeCall } from "../../utility/makeCall";
 import { Bank } from "../../utility/types";
 import { supportedBanks } from "./constants";
 import { images } from "../../images";
+import useUpdateProfileAndTransaction from "../hooks/useApiUpdate";
+import Loading from "../../components/Loading";
+import { Flow } from "react-native-animated-spinkit";
+
 
 export default function bankDetails() {
   const [selBank, setSelBank] = useState<boolean>(false);
@@ -30,6 +34,7 @@ export default function bankDetails() {
   // const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const router = useRouter();
   const { withdraw, setWithdraw } = useContext(DataContext);
+  const { updateProfile, updateTransaction } = useUpdateProfileAndTransaction();
 
   //Add beneficairy
   const addBeneFiciary = async () => {
@@ -110,6 +115,7 @@ export default function bankDetails() {
           hideOnPress: false,
         });
         setLoading(false);
+        await updateProfile();
       } else {
         Notifier.showNotification({
           title: "Add Beneficiary",
@@ -308,7 +314,7 @@ export default function bankDetails() {
                 />
               </View>
 
-              <View className="p-3 border border-[#DADADA] rounded-[15px] font-normal text-[14px] w-full">
+              <View className="flex flex-col p-3 border border-[#DADADA] rounded-[15px] font-normal text-[14px] w-full">
                 <TextInput
                   defaultValue={withdraw.accName}
                   placeholder={` ${loadingAccN ? "..." : "Account Name"}`}
@@ -320,6 +326,7 @@ export default function bankDetails() {
                   }
                   className="outline-none bg-transparent text-[#555] text-start w-[100%] h-auto"
                 />
+                {loadingAccN && <Flow size={20} color={`#6E3EFF`} />}
               </View>
 
               <View className="p-3 py-10 border border-[#DADADA] rounded-[15px] font-normal text-[14px] flex w-full">
@@ -343,9 +350,17 @@ export default function bankDetails() {
             onPress={() => addBeneFiciary()}
             className="items-center justify-center  rounded-full border border-[#6E3EFF] mt-10 w-[50%]"
           >
-            <Text className="font-bold text-lg text-[#6E3EFF] p-3 ">
-              {loading ? "Loading..." : "Save"}
-            </Text>
+            {loading ? (
+              <Loading
+                textSize="lg"
+                textColor="#6E3EFF"
+                loaderColor="#6E3EFF"
+              />
+            ) : (
+              <Text className="text-[#6E3EFF] font-bold text-lg p-3 ">
+                Save
+              </Text>
+            )}
           </TouchableOpacity>
 
           <TouchableOpacity

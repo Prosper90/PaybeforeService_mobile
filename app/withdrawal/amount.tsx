@@ -72,7 +72,7 @@ export default function amount() {
               onChangeText={(newText) =>
                 setWithdraw((prevWithdraw: any) => ({
                   ...prevWithdraw,
-                  amount: newText,
+                  amount: parseFloat(newText),
                 }))
               }
               defaultValue={withdraw?.amount}

@@ -17,6 +17,7 @@ import { END_URL } from "../../utility/constants";
 import { makeCall } from "../../utility/makeCall";
 import { DataContext } from "../../utility/context";
 import * as SecureStore from "expo-secure-store";
+import Loading from "../../components/Loading";
 
 export default function personal() {
   const { setUserProfile, userProfile } = useContext(DataContext);
@@ -167,9 +168,11 @@ export default function personal() {
         onPress={updateUser}
         className="border-2   bg-[#6E3EFF] rounded-full mt-2  border-white"
       >
-        <Text className="text-white font-bold text-center text-lg p-3 ">
-          {!loading ? "Update" : "Loading..."}
-        </Text>
+        {loading ? (
+          <Loading textSize="lg" textColor="#fff" loaderColor="#fff" />
+        ) : (
+          <Text className="text-white font-bold text-lg p-3 ">Login</Text>
+        )}
       </TouchableOpacity>
     </SafeAreaView>
   );

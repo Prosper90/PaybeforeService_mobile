@@ -27,6 +27,10 @@ interface DataContextProps {
   setWithdraw: React.Dispatch<React.SetStateAction<WithdrawObj>>;
   cancelPayment: CancelTx;
   setCancelPayment: React.Dispatch<React.SetStateAction<CancelTx>>;
+  recentTransactions: SelectedData[] | null;
+  setRecentTransactions: React.Dispatch<
+    React.SetStateAction<SelectedData[] | null>
+  >;
 }
 
 interface ContextProviderProps {
@@ -73,6 +77,11 @@ export const ContextProvider: React.FC<ContextProviderProps> = ({
     code: "",
   });
 
+  //for transaction
+  const [recentTransactions, setRecentTransactions] = useState<
+    SelectedData[] | null
+  >(null);
+
   const valuesEntered: DataContextProps = {
     signUpData,
     setSignUpData,
@@ -90,6 +99,8 @@ export const ContextProvider: React.FC<ContextProviderProps> = ({
     setWithdraw,
     cancelPayment,
     setCancelPayment,
+    recentTransactions,
+    setRecentTransactions,
   };
 
   return (

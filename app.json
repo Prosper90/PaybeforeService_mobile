@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "swiftsettle",
-    "slug": "swiftsettle",
+    "name": "PayBeforeService",
+    "slug": "PayBeforeService",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -25,7 +25,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.anonymous.PayBeforeService"
     },
     "web": {
       "bundler": "metro",

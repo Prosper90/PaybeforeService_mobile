@@ -15,12 +15,16 @@ import * as SecureStore from "expo-secure-store";
 import { END_URL } from "../../utility/constants";
 import { makeCall } from "../../utility/makeCall";
 import { Notifier, Easing, NotifierComponents } from "react-native-notifier";
+import useUpdateProfileAndTransaction from "../hooks/useApiUpdate";
 
-export default function otp() {
+
+export default function pin() {
   const [otp, setOtp] = useState<string>(""); // Initialize with an empty string
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
   const { userProfile, withdraw, setWithdraw } = useContext(DataContext);
+  const { updateProfile, updateTransaction } = useUpdateProfileAndTransaction();
+
 
   // const onChange = (value: string) => setOtp(value);
 
@@ -74,10 +78,10 @@ export default function otp() {
           Authorization: `Bearer ${storedToken}`,
           "Content-Type": "application/json",
         };
+        console.log(data, headers, "omo oooh");
 
-        const response = await makeCall(endpoint, data, headers, "put");
+        const response = await makeCall(endpoint, data, headers, "post");
 
-        //   console.log(response, "omo oooh");
         if (response.status) {
           setLoading(false);
           setWithdraw((prevWithdraw: any) => ({
@@ -100,6 +104,8 @@ export default function otp() {
             // onPress: () => console.log('Press'),
             hideOnPress: false,
           });
+          await updateProfile();
+          await updateTransaction();
           router.push("/withdrawal/complete");
         } else {
           setLoading(false);

@@ -7,6 +7,7 @@ import {
   ToastAndroid,
   TouchableOpacity,
   View,
+  useColorScheme,
 } from "react-native";
 import React, { useContext, useState } from "react";
 import { Link, useRouter } from "expo-router";
@@ -16,9 +17,12 @@ import { makeCall } from "../../utility/makeCall";
 import * as SecureStore from "expo-secure-store";
 import { DataContext } from "../../utility/context";
 import { Notifier, Easing, NotifierComponents } from "react-native-notifier";
+import Loading from "../../components/Loading";
 
 export default function Login() {
-  //   const [passwordT, setPasswordT] = useState("");
+  //themes
+  const colorScheme = useColorScheme();
+  //states
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
@@ -51,7 +55,7 @@ export default function Login() {
       }
       setLoading(true);
       const endpoint = `${END_URL}/auth/login`;
-      console.log(endpoint, "checking endpoint");
+      // console.log(endpoint, "checking endpoint");
 
       const data = {
         email: email,
@@ -67,8 +71,8 @@ export default function Login() {
 
       if (response.status) {
         setLoading(false);
-        ToastAndroid.show(`${response.message}`, ToastAndroid.SHORT);
-        console.log(typeof response.token, "likeeeeee");
+        // ToastAndroid.show(`${response.message}`, ToastAndroid.SHORT);
+        // console.log(typeof response.token, "likeeeeee");
         setUserProfile(response.data);
         await SecureStore.setItemAsync("tokenKey", String(response.token));
         router.push("/home"); // Navigate to the '/signup/otp' route
@@ -186,9 +190,11 @@ export default function Login() {
           onPress={Login}
           className="border-2 items-center  bg-[#6E3EFF] rounded-full mt-2 w-full border-white"
         >
-          <Text className="text-white font-bold text-lg p-3 ">
-            {loading ? "Loading..." : "Login"}
-          </Text>
+          {loading ? (
+            <Loading textSize="lg" textColor="#fff" loaderColor="#fff" />
+          ) : (
+            <Text className="text-white font-bold text-lg p-3 ">Login</Text>
+          )}
         </TouchableOpacity>
       </View>
     </View>

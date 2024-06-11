@@ -20,6 +20,8 @@ import { END_URL, formatDate } from "../../utility/constants";
 import { makeCall } from "../../utility/makeCall";
 import { Notifier, NotifierComponents, Easing } from "react-native-notifier";
 import { DataContext } from "../../utility/context";
+import useUpdateProfileAndTransaction from "../hooks/useApiUpdate";
+import Loading from "../../components/Loading";
 
 export default function redeem() {
   const [sModal, setSModal] = useState(false);
@@ -27,6 +29,7 @@ export default function redeem() {
   const [loading, setLoading] = useState(false);
   const { selectedViewTransaction, setSelectedViewTransaction } =
     useContext(DataContext);
+  const { updateProfile, updateTransaction } = useUpdateProfileAndTransaction();
 
   const redeem = async () => {
     try {
@@ -65,7 +68,9 @@ export default function redeem() {
           // onPress: () => console.log('Press'),
           hideOnPress: false,
         });
+        await updateTransaction();
         setSModal(true);
+        await updateProfile();
       } else {
         setLoading(false);
         //this is a warning
@@ -191,7 +196,11 @@ export default function redeem() {
           onPress={() => redeem()}
           className="border-2 items-center justify-center bg-[#6E3EFF] rounded-full w-full border-white"
         >
-          <Text className="text-white font-bold text-lg p-3 ">Continue</Text>
+          {loading ? (
+            <Loading textSize="lg" textColor="#fff" loaderColor="#fff" />
+          ) : (
+            <Text className="text-white font-bold text-lg p-3 ">Login</Text>
+          )}
         </TouchableOpacity>
       </View>
       <SuccessModal

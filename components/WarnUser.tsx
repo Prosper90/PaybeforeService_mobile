@@ -16,13 +16,17 @@ import * as SecureStore from "expo-secure-store";
 import { makeCall } from "../utility/makeCall";
 import { Notifier, NotifierComponents, Easing } from "react-native-notifier";
 import { DataContext } from "../utility/context";
+import useUpdateProfileAndTransaction from "../app/hooks/useApiUpdate";
 
 export default function WarnUser() {
   const [loading, setLoading] = useState<boolean>(false);
   const { cancelPayment, setCancelPayment } = useContext(DataContext);
+  const { updateProfile, updateTransaction } = useUpdateProfileAndTransaction();
 
   const cancelTx = async () => {
     try {
+      console.log(cancelPayment, "checking cancel payment");
+
       if (cancelPayment.code === "") {
         Notifier.showNotification({
           title: "Cancel Payment",
@@ -77,6 +81,7 @@ export default function WarnUser() {
           // onPress: () => console.log('Press'),
           hideOnPress: false,
         });
+        await updateTransaction();
         setCancelPayment({
           modal: false,
           code: "",
@@ -149,17 +154,17 @@ export default function WarnUser() {
           <Text
             className={`${
               Platform.OS === "ios" && "text-sm"
-            } text-xl font-semibold mt-5 text-black`}
+            } text-xl font-semibold mt-7 text-black`}
           >
             Are you sure you want to do this ?
           </Text>
 
-          <View className="flex justify-center items-center  gap-3">
+          <View className="flex flex-row w-[100%] justify-center items-center gap-3 mt-3">
             <TouchableOpacity
               onPress={handleContinue}
               className="border-2 mt-3 items-center justify-center bg-[#6E3EFF] rounded-full w-[50%] border-white"
             >
-              <Text className="text-white font-bold text-lg p-3 ">
+              <Text className="text-white font-bold text-base p-3 ">
                 {loading ? "Loading..." : "Continue"}
               </Text>
             </TouchableOpacity>
@@ -168,7 +173,7 @@ export default function WarnUser() {
               onPress={handleCancel}
               className="border-2 mt-3 items-center justify-center bg-[#6E3EFF] rounded-full w-[50%] border-white"
             >
-              <Text className="text-white font-bold text-lg p-3 ">Back</Text>
+              <Text className="text-white font-bold text-base p-3 ">Back</Text>
             </TouchableOpacity>
           </View>
         </View>

@@ -15,6 +15,8 @@ import { END_URL, getTime } from "../utility/constants";
 import * as SecureStore from "expo-secure-store";
 import { makeCall } from "../utility/makeCall";
 import { Notifier, NotifierComponents, Easing } from "react-native-notifier";
+import useUpdateProfileAndTransaction from "../app/hooks/useApiUpdate";
+import Loading from "./Loading";
 
 export default function GpaymentModal({
   modalVisible,
@@ -23,10 +25,12 @@ export default function GpaymentModal({
   setPaymentLink,
   setPaymentId,
   setDuration,
+  setlistenSocket,
 }: any) {
   const [loading, setLoading] = useState<boolean>(false);
   const [amount, setAmount] = useState<string>("");
   let urlLink = "https://paybeforeservice.com/";
+  const { updateProfile, updateTransaction } = useUpdateProfileAndTransaction();
 
   const generatePayment = async () => {
     try {
@@ -50,7 +54,7 @@ export default function GpaymentModal({
         setLoading(false);
         // ToastAndroid.show(`${response?.message}`, ToastAndroid.SHORT);
         Notifier.showNotification({
-          title: "Login Failed",
+          title: "Generate Payment",
           description: `${response?.message}`,
           Component: NotifierComponents.Notification,
           componentProps: {
@@ -69,15 +73,17 @@ export default function GpaymentModal({
         setPaymentId(response.data);
         const timeGet = getTime(response.data.expired);
         setDuration(timeGet);
+        setlistenSocket(true);
         //call the other modal for id and link and set this one off
         setPaymentModal(true);
         setModalVisible(false);
+        await updateTransaction();
       } else {
         setLoading(false);
         //this is a warning
         // ToastAndroid.show(`${response.message}`, ToastAndroid.SHORT);
         Notifier.showNotification({
-          title: "Login Failed",
+          title: "Generate Payment",
           description: `${response?.message}`,
           Component: NotifierComponents.Notification,
           componentProps: {
@@ -154,9 +160,11 @@ export default function GpaymentModal({
             onPress={generatePayment}
             className="border-2 mt-3 items-center justify-center bg-[#6E3EFF] rounded-full w-full border-white"
           >
-            <Text className="text-white font-bold text-lg p-3 ">
-              {loading ? "Loading..." : "Continue"}
-            </Text>
+            {loading ? (
+              <Loading textSize="lg" textColor="#fff" loaderColor="#fff" />
+            ) : (
+              <Text className="text-white font-bold text-lg p-3 ">Login</Text>
+            )}
           </TouchableOpacity>
         </View>
       </View>

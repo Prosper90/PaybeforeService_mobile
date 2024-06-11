@@ -6,21 +6,25 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  SafeAreaView
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import icons from "../../components/icons/Icons";
 import { DataContext } from "../../utility/context";
 import { Error, Success, Warn } from "../../components/SvgItems";
 import { formatDate } from "../../utility/constants";
+import ShowDownload from "../../components/ShowDownload";
+
 
 export default function dispute() {
   const { selectedViewDispute, setSelectedViewDispute } =
     useContext(DataContext);
+    const [showDownload, setShowDownload] = useState<boolean>(false);
 
   //   const [sModal, setSModal] = useState<boolean>(false);
 
   return (
-    <KeyboardAwareScrollView className="flex-1 bg-[#fafafa] ">
+    <SafeAreaView className="flex-1 bg-[#fafafa] ">
       <View className="p-5 flex flex-col justify-center items-center ">
         {/* {selectedViewDispute?.status === "success" ? (
           <Success />
@@ -143,6 +147,7 @@ export default function dispute() {
         </TouchableOpacity>
       </View>
       {/* <SuccessModal sModal={sModal} sMsg="Congratulations, this payment has been sent to your main wallet." sTittle="Congratulations" setSModal={setSModal}/> */}
-    </KeyboardAwareScrollView>
+      <ShowDownload type={"dispute"} showDownload={showDownload} setShowDownload={setShowDownload}  />
+    </SafeAreaView>
   );
 }

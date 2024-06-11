@@ -92,7 +92,7 @@ export default function complete() {
             {withdraw.status ? "Success" : "Failed"}
           </Text>
 
-          <View className="cursor-pointer border-ui-border hover:bg-[#FFF] border-border rounded-[10px] p-2">
+          <View className="cursor-pointer border hover:bg-[#FFF] border-[#DADADA] rounded-[10px] p-2">
             <View className="">
               {/* <Image
               source={{ uri: withdraw.bankImg as string }}

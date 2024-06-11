@@ -5,12 +5,14 @@ import {
   Text,
   TouchableOpacity,
   View,
+  SafeAreaView
 } from "react-native";
 import React, { useContext, useState } from "react";
 import icons from "./icons/Icons";
 import { router } from "expo-router";
 import { formatDate } from "../utility/constants";
 import { DataContext } from "../utility/context";
+import Loader from "./Loader";
 
 export default function DataTable({
   data,
@@ -25,8 +27,13 @@ export default function DataTable({
     router.push("/view/transaction");
   };
 
-  const renderItem = ({ item }: any) => (
-    <View className="flex-row justify-between mt-4 items-center">
+  const redeem = (selected: any) => {
+    setSelectedViewTransaction(selected);
+    router.push("/view/redeem");
+  };
+
+  const renderItem = ({ item, index }: any) => (
+    <View key={index} className="flex-row justify-between mt-4 items-center">
       <View className="flex-row gap-5 items-center">
         <Image
           source={icons.tableSvg}
@@ -70,7 +77,7 @@ export default function DataTable({
           onPressIn={() =>
             setCancelPayment({
               modal: true,
-              code: item.linkID,
+              code: item?.payment?.linkID,
             })
           }
           className="px-6 py-3 justify-center bg-[#a23eff32] rounded-full mr-1"
@@ -82,8 +89,8 @@ export default function DataTable({
         !item.payment.isRedeemed ? (
         // <TxReedem item={item} setRedeemObj={setRedeemObj} /> //we call reedem
         <TouchableOpacity
-          onPressIn={() => router.push("/payment/redeem")}
-          className="px-6 py-3 justify-center bg-[#a23eff32] rounded-full mr-1"
+          onPressIn={() => redeem(item)}
+          className="px-5 py-3 justify-center bg-[#a23eff32] rounded-full mr-1"
         >
           <Text className="text-[#A23EFF] text-xs font-bold">Redeem</Text>
         </TouchableOpacity>
@@ -91,7 +98,7 @@ export default function DataTable({
         // <TxDownload data={item} /> //We call Download
         <TouchableOpacity
           onPressIn={() => view(item)}
-          className="px-6 py-3 justify-center bg-[#a23eff32] rounded-full mr-1"
+          className="px-7 py-3 justify-center bg-[#a23eff32] rounded-full mr-1"
         >
           <Text className="text-[#A23EFF] text-xs font-bold">View</Text>
         </TouchableOpacity>
@@ -100,16 +107,17 @@ export default function DataTable({
   );
 
   return (
-    <View className="mx-4 mt-3 border border-[#DADADA] flex-1 flex-grow bg-white pb-3 px-5 mb-4 rounded-xl">
+    <View className="mx-4 mt-3 border border-[#DADADA] flex-1 flex-grow bg-white pb-3 px-2 mb-4 rounded-xl">
       {loadState ? (
-        <Text className="font-bold text-3xl text-center pt-20 text-[#555555]">
-          Loading...
+        <Text className="font-bold text-3xl text-center pt-24 text-[#555555]">
+          <Loader />
         </Text>
       ) : !loadState && data.length !== 0 ? (
         <FlatList
           data={data}
           renderItem={renderItem}
-          keyExtractor={(item) => item._id}
+          // keyExtractor={(item) => item._id}
+          keyExtractor={(item, index) => `${item._id}-${index}`}
           onEndReached={isTransactionComponent ? onEndReached : undefined}
           onEndReachedThreshold={0.5}
         />
@@ -125,7 +133,7 @@ export default function DataTable({
             <Text className="font-semibold text-xs text-black">
               You have no transactions
             </Text>
-            <Text className="font-normal text-xs text-gray-600">
+            <Text className="font-normal text-xs text-gray-600 text-center">
               Your payments would show up here after you have made a successful
               transaction
             </Text>

@@ -18,6 +18,8 @@ import { makeCall } from "../../utility/makeCall";
 import { END_URL } from "../../utility/constants";
 import { images } from "../../images";
 import { StatusBar } from "react-native";
+import Loading from "../../components/Loading";
+import useUpdateProfileAndTransaction from "../hooks/useApiUpdate";
 
 type Bene = {
   bank_Name: string;
@@ -38,6 +40,7 @@ export default function saved() {
   const { userProfile, withdraw, setWithdraw } = useContext(DataContext);
   const initialLoadCount = 7;
   const [loading, setLoading] = useState<boolean>(false);
+  const { updateProfile, updateTransaction } = useUpdateProfileAndTransaction();
 
   const deleteBene = async () => {
     try {
@@ -67,6 +70,7 @@ export default function saved() {
           // onPress: () => console.log('Press'),
           hideOnPress: false,
         });
+        await updateProfile();
       } else {
         setLoading(false);
         //this is a warning
@@ -224,9 +228,11 @@ export default function saved() {
               onPress={() => deleteBene()}
               className="border-2 items-center justify-center  rounded-full border-[#6E3EFF] mt-10 w-[50%]"
             >
-              <Text className="font-bold text-lg text-[#6E3EFF] p-3 ">
-                {loading ? "Loading..." : "Delete"}
-              </Text>
+              {loading ? (
+                <Loading textSize="lg" textColor="#fff" loaderColor="#fff" />
+              ) : (
+                <Text className="text-white font-bold text-lg p-3 ">Login</Text>
+              )}
             </TouchableOpacity>
 
             <TouchableOpacity

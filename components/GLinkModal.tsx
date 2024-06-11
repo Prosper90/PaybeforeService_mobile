@@ -20,8 +20,8 @@ export default function GLinkModal({
   paymentId,
   paymentLink,
 }: any) {
-  const textToCopy = "https://www.example.com/randht";
-  const textToLink = "https://www.example.com/randht";
+  // const textToCopy = "https://www.example.com/randht";
+  // const textToLink = "https://www.example.com/randht";
 
   const copyToClipboard = async (linkCopied: any) => {
     try {
@@ -71,9 +71,11 @@ export default function GLinkModal({
             </Text>
             <View className="flex-row border border-[#DADADA] bg-white p-4 rounded-xl justify-between">
               <Text className="font-medium text-[#555555] text-base">
-                {textToCopy}
+                {paymentId.linkID}
               </Text>
-              <TouchableOpacity onPress={() => copyToClipboard(paymentId)}>
+              <TouchableOpacity
+                onPress={() => copyToClipboard(paymentId.linkID)}
+              >
                 <Image source={icons.link} className="h-5 w-5" />
               </TouchableOpacity>
             </View>
@@ -84,7 +86,7 @@ export default function GLinkModal({
             </Text>
             <View className="flex-row border border-[#DADADA] bg-white p-4 rounded-xl justify-between">
               <Text className="font-medium text-[#555555] text-base">
-                {textToLink}
+                {paymentLink}
               </Text>
               <TouchableOpacity onPress={() => copyToClipboard(paymentLink)}>
                 <Image source={icons.link} className="h-5 w-5" />

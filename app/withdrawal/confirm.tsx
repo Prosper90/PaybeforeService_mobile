@@ -27,7 +27,7 @@ export default function confirm() {
           <Text className="text-[#555] text-xs text-center">
             Kindly confirm the details of your withdrawal below
           </Text>
-          <View className="cursor-pointer border border-[#DADADA] hover:bg-[#FFF] border-border rounded-[10px] p-2 mt-7">
+          <View className="cursor-pointer border border-[#DADADA] hover:bg-[#FFF] rounded-[10px] p-2 mt-7">
             <View className="">
               {images.map((item, index) => {
                 if (item.name === withdraw?.bankName) {
@@ -77,7 +77,7 @@ export default function confirm() {
           <Text className="text-white font-bold text-lg p-3 ">Continue</Text>
         </TouchableOpacity> */}
         <TouchableOpacity
-          onPress={() => router.push("/withdrawal/otp")}
+          onPress={() => router.push("/withdrawal/pin")}
           className="border-2 mt-3 items-center justify-center bg-[#6E3EFF] rounded-full w-full border-white"
         >
           <Text className="text-white font-bold text-lg p-3 ">Continue</Text>

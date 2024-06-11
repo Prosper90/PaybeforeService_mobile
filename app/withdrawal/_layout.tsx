@@ -76,10 +76,10 @@ export default function WithdrawalLayout() {
         }}
       />
       <Stack.Screen
-        name="otp"
+        name="pin"
         options={{
           headerShown: true,
-          headerTitle: "Otp",
+          headerTitle: "Pin",
           headerTitleAlign: "center",
           headerStyle: {
             backgroundColor: "#fff",

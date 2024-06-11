@@ -1,48 +1,53 @@
 import * as Sharing from "expo-sharing";
 import ViewShot from "react-native-view-shot";
 
-const accessbank = require("../assets/banks/access-bank.png");
-const citibank = require("../assets/banks/citibank-nigeria.png");
-const defaultImage = require("../assets/banks/default-image.png");
-const diamondbank = require("../assets/banks/access-bank.png");
-const ecobank = require("../assets/banks/ecobank-nigeria.png");
-const fidelitybank = require("../assets/banks/fidelity-bank.png");
-const firstbank = require("../assets/banks/first-bank-of-nigeria.png");
-const firstcitybank = require("../assets/banks/first-city-monument-bank.png");
-const gtb = require("../assets/banks/guaranty-trust-bank.png");
-const heritagebank = require("../assets/banks/heritage-bank.png");
-const keystone = require("../assets/banks/keystone-bank.png");
-const kudabank = require("../assets/banks/kuda-bank.png");
-const polarisbank = require("../assets/banks/polaris-bank.png");
-const stanbicbank = require("../assets/banks/stanbic-ibtc-bank.png");
-const standardcharterd = require("../assets/banks/standard-chartered-bank.png");
-const sterling = require("../assets/banks/sterling-bank.png");
-const unionbank = require("../assets/banks/union-bank-of-nigeria.png");
-const uba = require("../assets/banks/united-bank-for-africa.png");
-const wemabank = require("../assets/banks/wema-bank.png");
-const zenithbank = require("../assets/banks/zenith-bank.png");
+
 
 export const copyCode = (data: string) => {
   navigator.clipboard.writeText(data);
 };
 
-export const downloadReceipt = async (
-  type: "image" | "pdf",
-  viewShotRef: React.RefObject<ViewShot>
-) => {
+export const downloadReceipt = async (type: "image" | "pdf", viewShotRef: React.RefObject<ViewShot>) => {
   try {
+    console.log("Again again");
+    
     if (type === "image") {
+      console.log(type, "hhhhikeeeeee");
+      
       const uri = await viewShotRef.current.capture();
-      await Sharing.shareAsync(uri);
+      // const options = {
+      //   title: 'Share Content',
+      //   message: 'Check out this content',
+      //   url: `file://${uri}`,
+      //   type: 'image/jpg', // Set the MIME type for images
+      // };
+      // await Share.open(options);
+      await Sharing.shareAsync(uri, {
+        mimeType: 'image/jpeg',
+        dialogTitle: 'Share Image',
+      });
     } else {
-      const uri = await viewShotRef.current.captureAsync({
+      console.log("capture as pdffff");
+      
+      const uri = await viewShotRef.current.capture({
         format: "pdf",
         quality: 1,
+        result: "tmpfile"
       });
-      await Sharing.shareAsync(uri, { mimeType: "application/pdf" });
+      // const options = {
+      //   title: 'Share Content',
+      //   message: 'Check out this content',
+      //   url: `file://${uri}`,
+      //   type: 'application/pdf', // Set the MIME type for PDFs
+      // };
+      // await Share.open(options);
+      await Sharing.shareAsync(uri, {
+        mimeType: 'application/pdf',
+        dialogTitle: 'Share PDF',
+      });
     }
   } catch (error) {
-    console.error("Error downloading receipt:", error);
+    console.error("Error sharing receipt:", error);
   }
 };
 

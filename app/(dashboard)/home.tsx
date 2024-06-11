@@ -25,19 +25,23 @@ import * as SecureStore from "expo-secure-store";
 import { transactiondata } from "../../utility/data";
 import usePagination from "../hooks/usePagination";
 import { PaymentReturnValue, SelectedData } from "../../utility/types";
-import { END_URL } from "../../utility/constants";
+import { END_URL, getTime } from "../../utility/constants";
 import { makeCall } from "../../utility/makeCall";
-import io, { Socket, Manager } from "socket.io-client";
+// import io, { Socket, Manager } from "socket.io-client";
 import { SuccessPayment } from "../../components/SvgItems";
 import SuccessPaymentModal from "../../components/SuccessPaymentModal";
-import { Notifier, Easing } from "react-native-notifier";
+import { Notifier, Easing, NotifierComponents } from "react-native-notifier";
 import WarnUser from "../../components/WarnUser";
+import io from "socket.io-client";
+import useUpdateProfileAndTransaction from "../hooks/useApiUpdate";
 
 export default function Index() {
   const [modalVisible, setModalVisible] = useState(false);
   const [paymentModal, setPaymentModal] = useState(false);
   const [withdrawModal, setWithdrawModal] = useState(false);
   const [txloading, setTxLoading] = useState(true);
+  //socket
+  const [listenSocket, setlistenSocket] = useState(false);
   //payment generation details
   const [paymentLink, setPaymentLink] = useState<string>("");
   const [paymentId, setPaymentId] = useState<PaymentReturnValue>({
@@ -55,19 +59,27 @@ export default function Index() {
   const [account_info, setAccountInfo] = useState({});
   // const [timeOut, setTimeOut] = useState(false);
   const [duration, setDuration] = useState<any>();
-  const [recentTransactions, setRecentTransactions] = useState<SelectedData[]>(
-    []
-  );
-  //for the socket io and recieving payment
-  const [socket, setSocket] = useState<Socket | null>(null);
+  const { updateProfile, updateTransaction } = useUpdateProfileAndTransaction();
+  //Repayment states
+  const [triggerRepayApi, setTriggerRepayApi] = useState<boolean>(false);
+  const [repayactive, setRepayActive] = useState<boolean>(false);
+  const [repay, setRepay] = useState<any>();
 
-  const { userProfile, successPayment, setSuccessPayment, setPaymentPaidFor } =
-    useContext(DataContext);
+  let socket: any; // Declare socket outside of the try block to access it in the cleanup function
+
+  const {
+    userProfile,
+    successPayment,
+    setSuccessPayment,
+    setPaymentPaidFor,
+    recentTransactions,
+    setRecentTransactions,
+  } = useContext(DataContext);
   const router = useRouter();
 
   const getRecentTransaction = async () => {
     const storedToken = await SecureStore.getItemAsync("tokenKey");
-    console.log(storedToken, "token key");
+    // console.log(storedToken, "token key");
 
     const endpoint = `${END_URL}/transaction/getTx?page=${1}`;
     const headers = {
@@ -85,9 +97,41 @@ export default function Index() {
           return;
         }
       } else {
-        setRecentTransactions(response.data);
+        setRecentTransactions(response.allTx);
         // setAllTxData(response.allTx);
         setTxLoading(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getRepayments = async () => {
+    const storedRepayment = await SecureStore.getItemAsync("storedRepayment");
+    const storedToken = await SecureStore.getItemAsync("tokenKey");
+    console.log(storedRepayment, "token key getting");
+
+    const endpoint = `${END_URL}/payment/checkRepayment/${storedRepayment}`;
+    const headers = {
+      Authorization: `Bearer ${storedToken}`,
+      "Content-Type": "application/json",
+    };
+    try {
+      const response = await makeCall(endpoint, {}, headers, "get");
+      console.log(response.data.expired, "inside repayments");
+      if (!response.status) {
+        await SecureStore.setItemAsync("storedRepayment", "");
+        if (response.data.message === "invalid token") {
+          await SecureStore.setItemAsync("tokenKey", "");
+          ToastAndroid.show(`Session expired`, ToastAndroid.SHORT);
+          router.push("/login");
+          return;
+        }
+      } else {
+        console.log(response.data, "issuing data from pro");
+        setRepay(response.data);
+        setRepayActive(true);
+        setTriggerRepayApi(true);
       }
     } catch (error) {
       console.log(error);
@@ -110,60 +154,159 @@ export default function Index() {
   }, [txloading]);
 
   useEffect(() => {
-    if (Object.keys(paymentId).length !== 0) {
+    if (listenSocket && !triggerRepayApi) {
       try {
         // Connect to the server
         const live = "https://paybeforeservice.onrender.com";
         const local = "http://localhost:8000/";
-        const newSocket: Socket = io(live);
-        setSocket(newSocket);
+        socket = io(live);
+        // setSocket(newSocket);
 
-        console.log("Attempting to connect to the server... dashboard");
-
-        newSocket.on("connect", () => {
+        // Log when the connection is established
+        socket.on("connect", () => {
           console.log(
-            `Connection established with the server Payment${paymentId?.issue_id}`
+            "Connection established with the server",
+            `Payment${paymentId?.issue_id}`
           );
         });
+        // console.log("still going", paymentId);
 
-        newSocket.on(`Pay${paymentId?.issue_id}`, (data: any) => {
-          if (data.status === "success") {
-            setSuccessPayment(true);
-            setPaymentPaidFor(paymentId.linkID);
-            Notifier.showNotification({
-              title: "Payment incoming",
-              description: `${paymentId.linkID} initiated and in progress`,
-              duration: 0,
-              showAnimationDuration: 800,
-              showEasing: Easing.bounce,
-              // onHidden: () => console.log('Hidden'),
-              // onPress: () => console.log('Press'),
-              hideOnPress: false,
-            });
-            // setConfettiActiveDashboard(true);
-          }
+        // Listen for the 'message' event from the server for complete
+        socket.on(`PaySuccess${paymentId?.issue_id}`, async (data: any) => {
+          // console.log("Tirrrrrrreeeeeeeeed", data, "hhhhhuuuuuuuuuuu");
+          setSuccessPayment(true);
+          setPaymentPaidFor(paymentId.linkID);
+          await updateProfile();
+          await updateTransaction();
+          const imageSource = require("../../assets/images/notifysuccess.png");
+          Notifier.showNotification({
+            title: "Payment Recieved",
+            description: `${`${paymentId.linkID} Paid for`} `,
+            Component: NotifierComponents.Notification,
+            componentProps: {
+              imageSource: imageSource,
+            },
+            containerStyle: {
+              paddingTop: 30,
+            },
+            showAnimationDuration: 1000,
+            showEasing: Easing.bounce,
+            // onHidden: () => console.log('Hidden'),
+            // onPress: () => console.log('Press'),
+            hideOnPress: false,
+          });
+          socket.disconnect();
+        });
+        // console.log("ending");
+        //              : require("../../assets/images/notifywarn.png");
+
+        // Listen for the 'message' event from the server for incomplete
+        socket.on(`Incomplete${paymentId?.linkID}`, async (data: any) => {
+          // console.log("Tirrrrrrreeeeeeeeed", data, "hhhhhuuuuuuuuuuu");
+          // setSuccessPayment(true);
+          setPaymentPaidFor(paymentId.linkID);
+          await updateProfile();
+          await updateTransaction();
+          const imageSource = require("../../assets/images/notifywarn.png");
+          Notifier.showNotification({
+            title: "Payment Recieved",
+            description: `${`${paymentId.linkID} Was Incomplete`} `,
+            Component: NotifierComponents.Notification,
+            componentProps: {
+              imageSource: imageSource,
+            },
+            containerStyle: {
+              paddingTop: 30,
+            },
+            showAnimationDuration: 1000,
+            showEasing: Easing.bounce,
+            // onHidden: () => console.log('Hidden'),
+            // onPress: () => console.log('Press'),
+            hideOnPress: false,
+          });
+          await SecureStore.setItemAsync("storedRepayment", paymentId.linkID);
+          // setTriggerRepayApi(true);
+          getRepayments();
+          socket.disconnect();
         });
 
         // Disconnect after 10 minutes
         // const duration = 600; // 10 minutes in seconds
         // console.log(duration, "di di di dashboard");
         setTimeout(() => {
-          newSocket.disconnect();
+          socket.disconnect();
         }, Math.round(duration * 1000));
       } catch (error) {
         console.error("Error connecting to the server:", error);
       }
     }
-  }, [successPayment, paymentId]);
+  }, [listenSocket]);
 
-  // Clean up the socket connection on component unmount
+  // This useEffect is for awaiting repayment
   useEffect(() => {
-    return () => {
-      if (socket) {
-        socket.disconnect();
+    if (!triggerRepayApi) {
+      getRepayments();
+    }
+
+    if (repayactive && triggerRepayApi) {
+      try {
+        console.log("we are connected outside all");
+
+        // Connect to the server
+        const live = "https://paybeforeservice.onrender.com";
+        socket = io(live);
+
+        // Log when the connection is established
+        socket.on("connect", () => {
+          console.log(
+            "Connection established with the server",
+            `Payment${repay?.linkID}`
+          );
+        });
+
+        // Listen for the 'message' event from the server
+        socket.on(`RepaymentPaySuccess${repay?.linkID}`, async (data: any) => {
+          // console.log("Tirrrrrrreeeeeeeeed", data, "hhhhhuuuuuuuuuuu");
+          if (data.status === "success") {
+            setSuccessPayment(true);
+          }
+          setPaymentPaidFor(repay.linkID);
+          await updateProfile();
+          await updateTransaction();
+          const imageSource = require("../../assets/images/notifysuccess.png");
+          Notifier.showNotification({
+            title: "Repayment Recieved",
+            description: `${`${repay.linkID} Paid for`} `,
+            Component: NotifierComponents.Notification,
+            componentProps: {
+              imageSource: imageSource,
+            },
+            containerStyle: {
+              paddingTop: 30,
+            },
+            showAnimationDuration: 1000,
+            showEasing: Easing.bounce,
+            // onHidden: () => console.log('Hidden'),
+            // onPress: () => console.log('Press'),
+            hideOnPress: false,
+          });
+          socket.disconnect();
+        });
+
+        const timeGet = getTime(repay.expired);
+        setTimeout(() => {
+          socket.disconnect();
+        }, Math.round(timeGet * 1000));
+      } catch (error) {
+        console.log(error, "repayment");
       }
-    };
-  }, [socket]);
+    }
+    // return () => {
+    //   if (socket) {
+    //     socket.disconnect();
+    //   }
+    // };
+  }, [repayactive, triggerRepayApi]);
 
   return (
     <SafeAreaView className="flex-1 bg-[#fafafa]">
@@ -264,6 +407,7 @@ export default function Index() {
         setPaymentLink={setPaymentLink}
         setPaymentId={setPaymentId}
         setDuration={setDuration}
+        setlistenSocket={setlistenSocket}
       />
       <GLinkModal
         setPaymentModal={setPaymentModal}
